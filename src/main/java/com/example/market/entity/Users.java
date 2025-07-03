@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class Users {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,3 +23,4 @@ public class User {
 
     // Getters and Setters
 }
+
