@@ -1,6 +1,8 @@
 package com.example.market.service.implement;
 
+import com.example.market.dto.request.user.LoginRequestDto;
 import com.example.market.dto.request.user.SignUpRequestDto;
+import com.example.market.dto.response.user.LoginResponseDto;
 import com.example.market.dto.response.user.SignUpResponseDto;
 // import com.example.market.repository.UserRepository;
 import com.example.market.service.UserService;
@@ -23,6 +25,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ResponseEntity<SignUpResponseDto> signUp(SignUpRequestDto dto){
         return null ;
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<LoginResponseDto> login(LoginRequestDto dto){
+        return null;
     }
     
 }

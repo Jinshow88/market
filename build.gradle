@@ -38,7 +38,7 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 
 }
 

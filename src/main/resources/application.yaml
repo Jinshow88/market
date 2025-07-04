@@ -1,11 +1,15 @@
 spring:
+  
+  config:
+    import: optional:file:.env
+
   application:
-    name: market
+    name: market    
 
   datasource:
-    url: jdbc:mysql://localhost:3306/market?useSSL=false&serverTimezone=Asia/Seoul
-    username: root
-    password: wlsgus21^^
+    url: ${DEFAULT_DB_URL}
+    username: ${DEFAULT_DB_USERNAME}
+    password: ${DEFAULT_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -29,3 +33,6 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+    
+file:
+  directory: ${DEFAULT_FILE_DIRECTORY}
