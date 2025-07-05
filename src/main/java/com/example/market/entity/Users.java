@@ -1,6 +1,8 @@
 package com.example.market.entity;
+
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
@@ -13,14 +15,20 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class Users {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String username;
+    @Column(name = "이름")
+    private String userName;
+    @Column(name = "닉네임")
     private String userNic;
+    @Column(name = "이메일")
     private String userEmail;
+    @Column(name = "비밀번호")
     private String userPw;
+    @Column(name = "휴대폰")
+    private String userPhone;
+    @Column(name = "주소")
+    private String userAddress;
 
-    // Getters and Setters
 }
-
