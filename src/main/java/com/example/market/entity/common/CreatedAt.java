@@ -17,7 +17,7 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 public class CreatedAt {
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "생성일시")
     @CreatedDate
     private LocalDateTime createdAt;
     

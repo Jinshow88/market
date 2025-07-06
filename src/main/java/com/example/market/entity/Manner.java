@@ -1,5 +1,7 @@
 package com.example.market.entity;
 
+import com.example.market.entity.common.UpdatedAt;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,9 +14,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "")
-public class Manner {
+public class Manner extends UpdatedAt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private long userId;
+
+    private long reviewerId;
+
+    private long score;
+
 }

@@ -2,6 +2,9 @@ package com.example.market.entity;
 
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import com.example.market.entity.common.UpdatedAt;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "users")
-public class Users {
+public class Users extends UpdatedAt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

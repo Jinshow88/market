@@ -1,5 +1,7 @@
 package com.example.market.entity;
 
+import com.example.market.entity.common.CreatedAt;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,10 +14,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "favorite_profuct")
-public class FavoriteProduct {
+public class FavoriteProduct extends CreatedAt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private long userId;
+
+    private long productId;
+
+    private boolean isValid;
 
 }

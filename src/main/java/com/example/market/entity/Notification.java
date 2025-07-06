@@ -1,5 +1,7 @@
 package com.example.market.entity;
 
+import com.example.market.entity.common.CreatedAt;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,9 +14,19 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "")
-public class Notification {
+public class Notification extends CreatedAt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private long userId;
+
+    private long notificationType;
+
+    private long identifier;
+
+    private boolean isRead;
+
+    private boolean isValid;
 }
