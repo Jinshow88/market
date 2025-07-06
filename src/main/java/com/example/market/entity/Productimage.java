@@ -19,7 +19,7 @@ public class Productimage extends UpdatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long imageId;
     @Column(name = "물품ID")
     private long productId;
     @Column(name = "물품사진")

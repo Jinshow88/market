@@ -21,7 +21,7 @@ public class Category extends UpdatedAt{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long categoyId;
     @Column(name = "카테고리")
     private String name;
 

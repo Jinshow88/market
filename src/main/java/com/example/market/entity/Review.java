@@ -19,7 +19,7 @@ public class Review extends UpdatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private String reviewId;
     @Column(name = "물품ID")
     private long productId;
     @Column(name = "구매자ID")

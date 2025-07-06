@@ -11,16 +11,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "users")
 public class Users extends UpdatedAt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     @Column(name = "이름")
     private String userName;
     @Column(name = "닉네임")

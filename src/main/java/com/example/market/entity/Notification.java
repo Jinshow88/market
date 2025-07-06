@@ -19,7 +19,7 @@ public class Notification extends CreatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long notificationId;
     @Column(name = "사용자ID")
     private long userId;
     @Column(name = "알림유형")

@@ -19,7 +19,7 @@ public class FavoriteProduct extends CreatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long favoriteId;
     @Column(name = "사용자ID")
     private long userId;
     @Column(name = "물품ID")

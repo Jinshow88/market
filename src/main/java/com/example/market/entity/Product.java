@@ -21,7 +21,7 @@ public class Product extends UpdatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long productId;
     @Column(name = "판매자ID")
     private long sellerId;
     @Column(name = "구매자ID")
