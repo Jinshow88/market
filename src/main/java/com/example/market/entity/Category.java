@@ -4,6 +4,7 @@ package com.example.market.entity;
 
 import com.example.market.entity.common.UpdatedAt;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class Category extends UpdatedAt{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "카테고리")
     private String name;
 
 }
