@@ -9,7 +9,8 @@ import com.example.market.dto.response.auth.SignUpResponseDto;
 import com.example.market.entity.Users;
 import com.example.market.repository.UserRepository;
 import com.example.market.service.AuthService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,24 +23,39 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserRepository repository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 회원가입
     @Override
     @Transactional
     public ResponseEntity<SignUpResponseDto> signUp(SignUpRequestDto dto) {
-        Users users = Users.builder()
-                .userName(dto.getUserName())
-                .userNic(dto.getUserNic())
-                .userEmail(dto.getUserEmail())
-                .userPw(passwordEncoder.encode(dto.getUserPw()))
-                .userPhone(dto.getUserPhone())
-                .userAddress(dto.getUserAddress())
-                .build();
 
-        Users saveUser = userRepository.save(users);
-        return SignUpResponseDto.success(saveUser.getUserId());
+        String userName = dto.getUserName();
+        String userNic = dto.getUserNic();
+        String userEmail = dto.getUserEmail();
+        String userPw = dto.getUserPw();
+        String userPhone = dto.getUserPhone();
+        String userAddress = dto.getUserAddress();
+
+        // Boolean isExist = repository.existsByUserName(userName);
+
+        if (repository.existsByUserName(userName)) {
+            throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
+        }
+
+        Users users = new Users();
+
+        users.setUserName(userName);
+        users.setUserNic(userNic);
+        users.setUserEmail(userEmail);
+        users.setUserPw(bCryptPasswordEncoder.encode(userPw));
+        users.setUserPhone(userPhone);
+        users.setUserAddress(userAddress);
+
+        repository.save(users);
+
+        return SignUpResponseDto.success(0);
     }
 
     // 로그인

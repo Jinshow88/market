@@ -1,0 +1,5 @@
+package com.example.market.exception.errorcode;
+
+public enum ProductImageErrorCode {
+    
+}
