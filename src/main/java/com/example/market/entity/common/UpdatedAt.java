@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +17,13 @@ import lombok.Setter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class UpdatedAt extends CreatedAt {
-    
-    @LastModifiedDate 
+
+    @LastModifiedDate
     @Column(name = "수정일시")
     private LocalDateTime UpdatedAt;
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.UpdatedAt = LocalDateTime.now();
+    }
 }

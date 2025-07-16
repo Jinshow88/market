@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
 
         repository.save(users);
 
-        return SignUpResponseDto.success(0);
+        return SignUpResponseDto.success();
     }
 
     // 로그인
