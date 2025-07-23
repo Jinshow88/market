@@ -7,6 +7,9 @@ import com.example.market.dto.response.auth.SignInResponseDto;
 import com.example.market.dto.response.auth.SignOutResponseDto;
 import com.example.market.dto.response.auth.SignUpResponseDto;
 import com.example.market.entity.Users;
+import com.example.market.exception.CustomException;
+import com.example.market.exception.errorcode.AuthErrorCode;
+import com.example.market.exception.errorcode.CommonErrorCode;
 import com.example.market.repository.UserRepository;
 import com.example.market.service.AuthService;
 
@@ -31,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public ResponseEntity<SignUpResponseDto> signUp(SignUpRequestDto dto) {
 
+        try{
         String userName = dto.getUserName();
         String userNic = dto.getUserNic();
         String userEmail = dto.getUserEmail();
@@ -41,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
         // Boolean isExist = repository.existsByUserName(userName);
 
         if (repository.existsByUserName(userName)) {
-            throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
+            throw new CustomException(AuthErrorCode.EUI);
         }
 
         Users users = new Users();
@@ -56,6 +60,13 @@ public class AuthServiceImpl implements AuthService {
         repository.save(users);
 
         return SignUpResponseDto.success();
+    } catch (CustomException e){
+        e.printStackTrace();
+        throw new CustomException(e.getErrorCode());
+    } catch (Exception e){
+        e.printStackTrace();
+        throw new CustomException(CommonErrorCode.DBE);
+    }
     }
 
     // 로그인

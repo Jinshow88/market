@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum AuthRrrorCode implements ErrorCode {
+public enum AuthErrorCode implements ErrorCode {
 
 
     EUI(HttpStatus.BAD_REQUEST, "이미 존재하는 사용자입니다."); // EXISTENCE_USER_ID
