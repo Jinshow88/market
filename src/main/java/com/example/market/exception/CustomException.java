@@ -1,12 +1,37 @@
 package com.example.market.exception;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class CustomException extends RuntimeException{
-    
+
+public class CustomException extends RuntimeException {
+
     private final ErrorCode errorCode;
 
+    public CustomException(ErrorCode errorCode) {
+        super(errorCode.getMessage()); // 여기서 message 설정됨
+        this.errorCode = errorCode;
+    }
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
+    }
 }
+
+
+
+// @Getter
+// @RequiredArgsConstructor
+// public class CustomException extends RuntimeException {
+
+// private final ErrorCode errorCode;
+
+// public CustomException(ErrorCode errorCode) {
+// super(errorCode.getMessage()); // 여기서 message 설정됨
+// this.errorCode = errorCode;
+// }
+
+// public ErrorCode getErrorCode() {
+// return errorCode;
+// }
+// }
