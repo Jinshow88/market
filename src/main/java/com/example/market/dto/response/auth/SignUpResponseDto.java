@@ -10,18 +10,19 @@ import lombok.Setter;
 
 import static com.example.market.common.swagger.GlobalConst.SUCCESS_CODE;
 import static com.example.market.common.swagger.GlobalConst.SUCCESS_MESSAGE;
+
 @Setter
 @Getter
-public class SignUpResponseDto extends ResponseDto{
-    
+public class SignUpResponseDto extends ResponseDto {
+
     // private long userId;
-    private SignUpResponseDto(){
+    private SignUpResponseDto() {
         super(SUCCESS_CODE, SUCCESS_MESSAGE);
         // this.userId = userId;
 
     }
 
-    public static ResponseEntity<SignUpResponseDto> success(){
+    public static ResponseEntity<SignUpResponseDto> success() {
         SignUpResponseDto result = new SignUpResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

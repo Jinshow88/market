@@ -34,46 +34,68 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public ResponseEntity<SignUpResponseDto> signUp(SignUpRequestDto dto) {
 
-        try{
-        String userName = dto.getUserName();
-        String userNic = dto.getUserNic();
-        String userEmail = dto.getUserEmail();
-        String userPw = dto.getUserPw();
-        String userPhone = dto.getUserPhone();
-        String userAddress = dto.getUserAddress();
+        try {
+            String userName = dto.getUserName();
+            String userNic = dto.getUserNic();
+            String userEmail = dto.getUserEmail();
+            String userPw = dto.getUserPw();
+            String userPhone = dto.getUserPhone();
+            String userAddress = dto.getUserAddress();
 
-        // Boolean isExist = repository.existsByUserName(userName);
+            // Boolean isExist = repository.existsByUserName(userName);
 
-        if (repository.existsByUserName(userName)) {
-            throw new CustomException(AuthErrorCode.EUI);
+            if (repository.existsByUserName(userName)) {
+                throw new CustomException(AuthErrorCode.EUI);
+            }
+
+            Users users = new Users();
+
+            users.setUserName(userName);
+            users.setUserNic(userNic);
+            users.setUserEmail(userEmail);
+            users.setUserPw(bCryptPasswordEncoder.encode(userPw));
+            users.setUserPhone(userPhone);
+            users.setUserAddress(userAddress);
+
+            repository.save(users);
+
+            return SignUpResponseDto.success();
+        } catch (CustomException e) {
+            e.printStackTrace();
+            throw new CustomException(e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.DBE);
         }
-
-        Users users = new Users();
-
-        users.setUserName(userName);
-        users.setUserNic(userNic);
-        users.setUserEmail(userEmail);
-        users.setUserPw(bCryptPasswordEncoder.encode(userPw));
-        users.setUserPhone(userPhone);
-        users.setUserAddress(userAddress);
-
-        repository.save(users);
-
-        return SignUpResponseDto.success();
-    } catch (CustomException e){
-        e.printStackTrace();
-        throw new CustomException(e.getErrorCode());
-    } catch (Exception e){
-        e.printStackTrace();
-        throw new CustomException(CommonErrorCode.DBE);
-    }
     }
 
     // 로그인
     @Override
     @Transactional
     public ResponseEntity<SignInResponseDto> signIn(SignInRequestDto dto) {
-        return null;
+
+        try {
+            String userEmail = dto.getUserEmail();
+            String userPw = dto.getUserPw();
+
+            Users users = repository.findByUserEmail(userEmail);
+            if (users == null) {
+                throw new CustomException(AuthErrorCode.NEU);
+            }
+            if (!bCryptPasswordEncoder.matches(userPw, users.getUserPw())) {
+                throw new CustomException(AuthErrorCode.PW);
+            }
+
+            return SignInResponseDto.success();
+
+        } catch (CustomException e) {
+            e.printStackTrace();
+            throw new CustomException(e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.DBE);
+        }
+
     }
 
     // 로그아웃
