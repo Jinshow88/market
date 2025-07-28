@@ -18,4 +18,6 @@ public interface AuthService {
 
     // 로그아웃
     ResponseEntity<SignOutResponseDto> signOut(SignOutRequestDto dto);
+
+    //회원탈퇴
 }
