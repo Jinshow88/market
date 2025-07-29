@@ -1,8 +1,10 @@
 package com.example.market.service;
 
+import com.example.market.dto.request.auth.DeleteUserRequestDto;
 import com.example.market.dto.request.auth.SignInRequestDto;
 import com.example.market.dto.request.auth.SignOutRequestDto;
 import com.example.market.dto.request.auth.SignUpRequestDto;
+import com.example.market.dto.response.auth.DeleteUserResponseDto;
 import com.example.market.dto.response.auth.SignInResponseDto;
 import com.example.market.dto.response.auth.SignOutResponseDto;
 import com.example.market.dto.response.auth.SignUpResponseDto;
@@ -20,4 +22,5 @@ public interface AuthService {
     ResponseEntity<SignOutResponseDto> signOut(SignOutRequestDto dto);
 
     //회원탈퇴
+    ResponseEntity<DeleteUserResponseDto> deleteUser(DeleteUserRequestDto dto);
 }

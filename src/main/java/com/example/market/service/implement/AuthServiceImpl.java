@@ -1,8 +1,10 @@
 package com.example.market.service.implement;
 
+import com.example.market.dto.request.auth.DeleteUserRequestDto;
 import com.example.market.dto.request.auth.SignInRequestDto;
 import com.example.market.dto.request.auth.SignOutRequestDto;
 import com.example.market.dto.request.auth.SignUpRequestDto;
+import com.example.market.dto.response.auth.DeleteUserResponseDto;
 import com.example.market.dto.response.auth.SignInResponseDto;
 import com.example.market.dto.response.auth.SignOutResponseDto;
 import com.example.market.dto.response.auth.SignUpResponseDto;
@@ -105,4 +107,10 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
+    //회원탈퇴
+    @Override
+    @Transactional
+    public ResponseEntity<DeleteUserResponseDto> deleteUser(DeleteUserRequestDto dto){
+        return null;
+    }
 }
