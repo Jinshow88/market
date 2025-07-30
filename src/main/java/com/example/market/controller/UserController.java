@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-@Tag(name = "로그인 및 회원가입")
+@Tag(name = "회원정보관리")
 public class UserController {
     private final UserService service;
 

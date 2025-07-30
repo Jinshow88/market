@@ -1,0 +1,17 @@
+package com.example.market.common.swagger.description.auth;
+
+public class SignOutSwagger {
+
+    public static final String USER_SIGN_OUT_DESCRIPION =
+
+                    "<strong>로그인 기능 입니다.</strong>" +
+                    "<p>ID와 Passwode를 입력해 주세요</p>" +
+                    "<p>-----------------------------------</p>";
+
+    public static final String USER_SIGN_OUT_RESPONSE_ERROR_CODE =
+
+                    "<strong>발생 가능한 에러코드</strong>" +
+                    "<p>CU - 미 로그인 (400)</p>" +
+                    "<p>DBE - 데이터베이스 에러 (500)</p>";
+
+}

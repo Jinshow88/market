@@ -13,5 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/reviwe")
 @Tag(name = "리뷰")
 public class ReviewController {
-    
+    // 리뷰등록
+    // 리뷰수정
+    // 리뷰 삭제
+    // 리뷰 조회
 }

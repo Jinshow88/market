@@ -10,8 +10,15 @@ import com.example.market.repository.FavoriteProductRepository;
 import com.example.market.service.FavoriteProductService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class FavorietProductServiceImpl implements FavoriteProductService {
 
     private final FavoriteProductRepository favoriteProductRepository;

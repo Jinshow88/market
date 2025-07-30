@@ -13,5 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/product")
 @Tag(name = "상품")
 public class ProductController {
-    
+    // 상품등록
+    // 상품삭제
+    // 상품수정
+    // 상품조회
 }

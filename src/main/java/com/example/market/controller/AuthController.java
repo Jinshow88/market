@@ -1,8 +1,11 @@
 package com.example.market.controller;
 
-import static com.example.market.common.swagger.description.auth.SignInSwgger.USER_SIGN_IN_DESCRIPTION;
-import static com.example.market.common.swagger.description.auth.SignInSwgger.USER_SIGN_IN_RESPONSE_ERROR_CODE;
+import static com.example.market.common.swagger.description.auth.SignInSwagger.USER_SIGN_IN_DESCRIPTION;
+import static com.example.market.common.swagger.description.auth.SignInSwagger.USER_SIGN_IN_RESPONSE_ERROR_CODE;
 
+import com.example.market.common.swagger.description.auth.DeleteUserSwagger;
+import com.example.market.common.swagger.description.auth.SignOutSwagger;
+import com.example.market.common.swagger.description.auth.SignUpSwagger;
 import com.example.market.dto.request.auth.DeleteUserRequestDto;
 import com.example.market.dto.request.auth.SignInRequestDto;
 import com.example.market.dto.request.auth.SignOutRequestDto;
@@ -52,18 +55,27 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/sign-up")
+    @Operation(summary = "회원가입", description = SignUpSwagger.SIGN_UP_USER_DESCRIPTION)
+    @ApiResponse(responseCode = "200", description = SignUpSwagger.SIGN_UP_USER_RESPONSE_ERROR_CODE,
+    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SignUpResponseDto.class)))
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpRequestDto dto) {
         return service.signUp(dto);
     }
 
     // 로그아웃
     @PostMapping("/sign-out")
+    @Operation(summary = "로그아웃", description = SignOutSwagger.USER_SIGN_OUT_DESCRIPION)
+    @ApiResponse(responseCode = "200", description = SignOutSwagger.USER_SIGN_OUT_RESPONSE_ERROR_CODE,
+    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SignOutResponseDto.class)))
     public ResponseEntity<SignOutResponseDto> signOut(@RequestBody SignOutRequestDto dto) {
         return service.signOut(dto);
     }
 
     //회원탈퇴
-    @DeleteMapping()
+    @DeleteMapping("/delete-user")
+    @Operation(summary = "회원탈퇴", description = DeleteUserSwagger.DELETE_USER_DESCRIPTION)
+    @ApiResponse(responseCode = "200", description = DeleteUserSwagger.DELETE_USER_RESPONSE_ERROR_CODE,
+    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteUserResponseDto.class)))
     public ResponseEntity<DeleteUserResponseDto> deleteUser(@ParameterObject DeleteUserRequestDto dto){
         return service.deleteUser(dto);
     }

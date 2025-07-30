@@ -13,5 +13,5 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/image")
 @Tag(name = "상품이미지")
 public class ProductimageController {
-    
+        //상품이미지 등록
 }
