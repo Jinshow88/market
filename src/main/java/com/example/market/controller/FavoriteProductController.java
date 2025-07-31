@@ -1,8 +1,8 @@
 package com.example.market.controller;
 
 import com.example.market.common.swagger.description.auth.DeleteUserSwagger;
-import com.example.market.common.swagger.description.favoriteproduct.GetFavoriteSwgger;
-import com.example.market.common.swagger.description.favoriteproduct.PostFavoriteSwgger;
+import com.example.market.common.swagger.description.favoriteproduct.GetFavoriteSwagger;
+import com.example.market.common.swagger.description.favoriteproduct.PostFavoriteSwagger;
 import com.example.market.dto.request.favoriteproduct.DeleteFavoriteRequestDto;
 import com.example.market.dto.request.favoriteproduct.GetFavoriteRequestDto;
 import com.example.market.dto.request.favoriteproduct.PostFavoriteRequestDto;
@@ -38,8 +38,8 @@ public class FavoriteProductController {
     private final FavoriteProductService service;
     // 관심상품등록
     @PostMapping("/PostProduct")
-    @Operation(summary = "관심상품등록", description = PostFavoriteSwgger.POST_FAVORITE_DESCRIPTION)
-    @ApiResponse(responseCode = "200", description = PostFavoriteSwgger.POST_FAVORITE_RESPONSE_ERROR_CODE,
+    @Operation(summary = "관심상품등록", description = PostFavoriteSwagger.POST_FAVORITE_DESCRIPTION)
+    @ApiResponse(responseCode = "200", description = PostFavoriteSwagger.POST_FAVORITE_RESPONSE_ERROR_CODE,
     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PostFavoriteResponseDto.class)))
     public ResponseEntity<PostFavoriteResponseDto> postFaProd(@RequestBody PostFavoriteRequestDto dto){
         return service.postFaProd(dto);
@@ -56,8 +56,8 @@ public class FavoriteProductController {
 
     // 목록보기
     @GetMapping("/GetProduct")
-    @Operation(summary = "목록보기", description = GetFavoriteSwgger.GET_FAVORITE_DESCRIPTION)
-    @ApiResponse(responseCode = "200", description = GetFavoriteSwgger.GET_FAVORITE_RESPONSE_ERROR_CODE,
+    @Operation(summary = "목록보기", description = GetFavoriteSwagger.GET_FAVORITE_DESCRIPTION)
+    @ApiResponse(responseCode = "200", description = GetFavoriteSwagger.GET_FAVORITE_RESPONSE_ERROR_CODE,
     content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetFavoriteResponseDto.class)))
     public ResponseEntity<GetFavoriteResponseDto> getFaProd(@ParameterObject GetFavoriteRequestDto dto){
         return service.getFaProd(dto);

@@ -1,4 +1,4 @@
-package com.example.market.dto.request.notification;
+package com.example.market.dto.request.alarm;
 
 import lombok.Getter;
 import lombok.Setter;

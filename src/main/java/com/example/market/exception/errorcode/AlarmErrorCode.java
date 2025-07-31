@@ -1,5 +1,5 @@
 package com.example.market.exception.errorcode;
 
-public enum NorificationErrorCode {
+public enum AlarmErrorCode {
     
 }
