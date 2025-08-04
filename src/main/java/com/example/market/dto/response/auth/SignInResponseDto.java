@@ -13,14 +13,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 public class SignInResponseDto extends ResponseDto {
 
-    private SignInResponseDto() {
+    private String accessToken;
+
+    private SignInResponseDto(String accessToken) {
         super(SUCCESS_CODE, SUCCESS_MESSAGE);
+        this.accessToken = accessToken;
     }
 
-    public static ResponseEntity<SignInResponseDto> success() {
-        SignInResponseDto result = new SignInResponseDto();
+    public static ResponseEntity<SignInResponseDto> success(String accessToken) {
+        SignInResponseDto result = new SignInResponseDto(accessToken);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

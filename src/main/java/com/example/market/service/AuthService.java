@@ -11,12 +11,14 @@ import com.example.market.dto.response.auth.SignUpResponseDto;
 
 import org.springframework.http.ResponseEntity;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 public interface AuthService {
     // 회원가입
     ResponseEntity<SignUpResponseDto> signUp(SignUpRequestDto dto);
 
     // 로그인
-    ResponseEntity<SignInResponseDto> signIn(SignInRequestDto dto);
+    ResponseEntity<SignInResponseDto> signIn(HttpServletResponse res,SignInRequestDto dto);
 
     // 로그아웃
     ResponseEntity<SignOutResponseDto> signOut(SignOutRequestDto dto);

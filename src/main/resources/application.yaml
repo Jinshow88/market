@@ -36,3 +36,11 @@ logging:
     
 file:
   directory: ${DEFAULT_FILE_DIRECTORY}
+app:
+  jwt:
+    secret: B0g4TGK6R7Y7zRrMdDLK1Rz4WY2eWZUM7aQF2PXf7bEfFw3wQG7QjUPO2lYhZzmHNoUhT5mFi3ob1E2RBXqfUQ==
+    header-schema-name: Authorization
+    token-type: Bearer
+    access-token-expiry: 3600000
+    refresh-token-expiry: 1209600000
+    refresh-token-cookie-name: refresh_token

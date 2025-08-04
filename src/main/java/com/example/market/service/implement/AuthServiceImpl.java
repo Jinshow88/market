@@ -1,5 +1,7 @@
 package com.example.market.service.implement;
 
+import com.example.market.common.security.AppProperties;
+import com.example.market.common.security.CookieUtils;
 import com.example.market.dto.request.auth.DeleteUserRequestDto;
 import com.example.market.dto.request.auth.SignInRequestDto;
 import com.example.market.dto.request.auth.SignOutRequestDto;
@@ -12,14 +14,17 @@ import com.example.market.entity.Users;
 import com.example.market.exception.CustomException;
 import com.example.market.exception.errorcode.AuthErrorCode;
 import com.example.market.exception.errorcode.CommonErrorCode;
+import com.example.market.jwt.JwtTokenProvider;
 import com.example.market.repository.UserRepository;
+import com.example.market.security.MyUser;
 import com.example.market.service.AuthService;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +35,9 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository repository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AppProperties appProperties;
+    private final CookieUtils cookieUtils;
 
     // 회원가입
     @Override
@@ -74,8 +82,10 @@ public class AuthServiceImpl implements AuthService {
     // 로그인
     @Override
     @Transactional
-    public ResponseEntity<SignInResponseDto> signIn(SignInRequestDto dto) {
+    public ResponseEntity<SignInResponseDto> signIn(HttpServletResponse res, SignInRequestDto dto) {
 
+        String accessToken = null;
+        String refreshToken = null;
         try {
             String userEmail = dto.getUserEmail();
             String userPw = dto.getUserPw();
@@ -88,8 +98,20 @@ public class AuthServiceImpl implements AuthService {
                 throw new CustomException(AuthErrorCode.PW);
             }
 
-            return SignInResponseDto.success();
+            MyUser myUser = MyUser.builder()
+                    .userId(users.getUserId())
+                    // .role(users.getRole)
+                    .build();
 
+            accessToken = jwtTokenProvider.generateAccessToken(myUser);
+            refreshToken = jwtTokenProvider.generateRefreshToken(myUser);
+
+            
+            int refreshTokenMaxAge = appProperties.getJwt().getRefreshTokenCookieMaxAge();
+            cookieUtils.deleteCookie(res, "refresh-token");
+            cookieUtils.setCookie(res, "refresh-token", refreshToken, refreshTokenMaxAge);
+            
+            return SignInResponseDto.success(accessToken);
         } catch (CustomException e) {
             e.printStackTrace();
             throw new CustomException(e.getErrorCode());
@@ -107,10 +129,10 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
-    //회원탈퇴
+    // 회원탈퇴
     @Override
     @Transactional
-    public ResponseEntity<DeleteUserResponseDto> deleteUser(DeleteUserRequestDto dto){
+    public ResponseEntity<DeleteUserResponseDto> deleteUser(DeleteUserRequestDto dto) {
         return null;
     }
 }

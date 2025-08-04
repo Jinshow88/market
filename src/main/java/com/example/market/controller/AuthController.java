@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,8 +50,8 @@ public class AuthController {
     @Operation(summary = "로그인", description = USER_SIGN_IN_DESCRIPTION)
     @ApiResponse(responseCode = "200", description = USER_SIGN_IN_RESPONSE_ERROR_CODE,
     content = @Content(mediaType = "application/json", schema = @Schema(implementation = SignInResponseDto.class)))
-    public ResponseEntity<SignInResponseDto> signIn(@RequestBody SignInRequestDto dto) {
-        return service.signIn(dto);
+    public ResponseEntity<SignInResponseDto> signIn(HttpServletResponse res, @RequestBody SignInRequestDto dto) {
+        return service.signIn(res, dto);
     }
 
     // 회원가입

@@ -17,7 +17,7 @@ public class AppProperties {
     private String jwtSecret;
     private Long jwtExpirationMs;
     // 필요한 설정 값들 추가
-    private final Jwt jwt;
+    private Jwt jwt;
 
     @Getter
     @Setter
