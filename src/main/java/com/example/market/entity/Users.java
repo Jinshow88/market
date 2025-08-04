@@ -3,6 +3,7 @@ package com.example.market.entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import com.example.market.common.swagger.Role;
 import com.example.market.entity.common.UpdatedAt;
 
 import jakarta.persistence.Column;
@@ -39,5 +40,7 @@ public class Users extends UpdatedAt{
     private String userPhone;
     @Column(name = "주소")
     private String userAddress;
+
+    private Role role;
 
 }

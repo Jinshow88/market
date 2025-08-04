@@ -1,5 +1,6 @@
 package com.example.market.security;
 
+import com.example.market.common.swagger.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;

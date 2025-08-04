@@ -2,6 +2,7 @@ package com.example.market.service.implement;
 
 import com.example.market.common.security.AppProperties;
 import com.example.market.common.security.CookieUtils;
+import com.example.market.common.swagger.Role;
 import com.example.market.dto.request.auth.DeleteUserRequestDto;
 import com.example.market.dto.request.auth.SignInRequestDto;
 import com.example.market.dto.request.auth.SignOutRequestDto;
@@ -51,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
             String userPw = dto.getUserPw();
             String userPhone = dto.getUserPhone();
             String userAddress = dto.getUserAddress();
+            String userRole = dto.getUserRole();
 
             // Boolean isExist = repository.existsByUserName(userName);
 
@@ -59,13 +61,14 @@ public class AuthServiceImpl implements AuthService {
             }
 
             Users users = new Users();
-
+            
             users.setUserName(userName);
             users.setUserNic(userNic);
             users.setUserEmail(userEmail);
             users.setUserPw(bCryptPasswordEncoder.encode(userPw));
             users.setUserPhone(userPhone);
             users.setUserAddress(userAddress);
+            users.setRole(Role.ROLE_USER);
 
             repository.save(users);
 
@@ -100,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
 
             MyUser myUser = MyUser.builder()
                     .userId(users.getUserId())
-                    // .role(users.getRole)
+                    .role(users.getRole())
                     .build();
 
             accessToken = jwtTokenProvider.generateAccessToken(myUser);

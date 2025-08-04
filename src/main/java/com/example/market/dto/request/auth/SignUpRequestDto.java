@@ -4,10 +4,12 @@ package com.example.market.dto.request.auth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class SignUpRequestDto {
     @JsonIgnore
     private long id;
@@ -23,4 +25,6 @@ public class SignUpRequestDto {
     private String userPhone;
 
     private String userAddress;
+
+    private String userRole;
 }
