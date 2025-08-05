@@ -8,8 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DeleteProductRequestDto {
-
     @JsonIgnore
+    private long userId;
+
+    
     private long productId;
     @JsonIgnore
     private String sellerId;

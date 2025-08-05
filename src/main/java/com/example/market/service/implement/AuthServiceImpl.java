@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
             String userPw = dto.getUserPw();
             String userPhone = dto.getUserPhone();
             String userAddress = dto.getUserAddress();
-            String userRole = dto.getUserRole();
+            // String userRole = dto.getUserRole();
 
             // Boolean isExist = repository.existsByUserName(userName);
 

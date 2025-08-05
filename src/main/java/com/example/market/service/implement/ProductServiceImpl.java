@@ -1,5 +1,9 @@
 package com.example.market.service.implement;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.market.dto.object.product.GetProductObjectDto;
 import com.example.market.dto.request.product.DeleteProductRequestDto;
 import com.example.market.dto.request.product.GetProductRequestDto;
 import com.example.market.dto.request.product.PostProductRequestDto;
@@ -53,6 +57,7 @@ public class ProductServiceImpl implements ProductService {
             String location = dto.getLocation();
             // long productState = dto.getProductState();
             String thumbNailImage = dto.getThumbNailImage();
+            long sellerId = dto.getUserId();
 
             Product product = new Product();
 
@@ -63,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
             product.setDescripion(descripion);
             product.setProductState(1);
             product.setThumbNailImage(thumbNailImage);
+            product.setSellerId(sellerId);
 
             repository.save(product);
             return PostProductResponseDto.success();
@@ -80,7 +86,29 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ResponseEntity<DeleteProductResponseDto> deleteProduct(DeleteProductRequestDto dto) {
-        return null;
+
+        try {
+            dto.setUserId(authenticationFacade.getLoginUserId());
+            if (dto.getUserId() <= 0) {
+                throw new RuntimeException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.MNF);
+        }
+
+        long productId = dto.getProductId();
+        long sellerId = dto.getUserId();
+
+        Product product = repository.findById(productId)
+                .orElseThrow(() -> new CustomException(CommonErrorCode.DBE));
+
+        if (product.getSellerId() != sellerId) {
+            throw new CustomException(CommonErrorCode.DBE);
+        }
+
+        repository.deleteById(productId);
+        return DeleteProductResponseDto.success();
     }
 
     // 상품수정
@@ -94,6 +122,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ResponseEntity<GetProductResponseDto> getProduct(GetProductRequestDto dto) {
-        return null;
+
+        List<GetProductObjectDto> getProductObjectDtos = new ArrayList<>();
+        try{
+            dto.setUserId(authenticationFacade.getLoginUserId());
+            if (dto.getUserId() <= 0) {
+                throw new RuntimeException();
+            }
+            
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.MNF);
+        }
+        String title = dto.getTitle();
+        
+        
+        // Product product = repository.findById(dto.getProductId()).get();
+
+        return GetProductResponseDto.success(getProductObjectDtos);
     }
 }
