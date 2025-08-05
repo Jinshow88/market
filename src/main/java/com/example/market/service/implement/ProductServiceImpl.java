@@ -15,6 +15,7 @@ import com.example.market.dto.response.product.UpdateProductResponseDto;
 import com.example.market.entity.Product;
 import com.example.market.exception.CustomException;
 import com.example.market.exception.errorcode.CommonErrorCode;
+import com.example.market.exception.errorcode.ProductErrorCode;
 import com.example.market.repository.ProductRepository;
 import com.example.market.security.AuthenticationFacade;
 import com.example.market.service.ProductService;
@@ -124,19 +125,33 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<GetProductResponseDto> getProduct(GetProductRequestDto dto) {
 
         List<GetProductObjectDto> getProductObjectDtos = new ArrayList<>();
-        try{
+        try {
             dto.setUserId(authenticationFacade.getLoginUserId());
             if (dto.getUserId() <= 0) {
                 throw new RuntimeException();
             }
-            
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new CustomException(CommonErrorCode.MNF);
         }
         String title = dto.getTitle();
-        
-        
+        long productId = dto.getProductId();
+
+        Product product = repository.findBytitle(title)
+                .orElseThrow(() -> new CustomException(ProductErrorCode.NP));
+
+        GetProductObjectDto productDto = new GetProductObjectDto();
+        productDto.setSellerId(product.getSellerId());
+        productDto.setCategoryId(product.getCategoryId());
+        productDto.setPrice(product.getPrice());
+        productDto.setTitle(product.getTitle());
+        // productDto.setDescription(product.getDescription());
+        productDto.setLocation(product.getLocation());
+        productDto.setProductState(product.getProductState());
+        // productDto.setThumbnailImage(product.getThumbnailImage());
+        productDto.setViewCnt(product.getViewCnt());
+
+        getProductObjectDtos.add(productDto);
         // Product product = repository.findById(dto.getProductId()).get();
 
         return GetProductResponseDto.success(getProductObjectDtos);
