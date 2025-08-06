@@ -129,13 +129,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public ResponseEntity<SignOutResponseDto> signOut(SignOutRequestDto dto) {
-        return null;
+        return SignOutResponseDto.success();
     }
 
     // 회원탈퇴
     @Override
     @Transactional
     public ResponseEntity<DeleteUserResponseDto> deleteUser(DeleteUserRequestDto dto) {
-        return null;
+        return DeleteUserResponseDto.success();
     }
 }

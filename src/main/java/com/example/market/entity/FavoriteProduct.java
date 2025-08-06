@@ -24,12 +24,15 @@ public class FavoriteProduct extends CreatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long favoriteId;
+    
     @ManyToOne
     @JoinColumn(name = "사용자ID")
     private Users sellerId;
+    
     @ManyToOne
     @JoinColumn(name = "물품ID")
     private Product productId;
+    
     @Column(name = "찜상태")
     private boolean isValid;
 
