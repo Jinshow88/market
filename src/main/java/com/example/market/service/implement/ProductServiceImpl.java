@@ -13,10 +13,12 @@ import com.example.market.dto.response.product.GetProductResponseDto;
 import com.example.market.dto.response.product.PostProductResponseDto;
 import com.example.market.dto.response.product.UpdateProductResponseDto;
 import com.example.market.entity.Product;
+import com.example.market.entity.Users;
 import com.example.market.exception.CustomException;
 import com.example.market.exception.errorcode.CommonErrorCode;
 import com.example.market.exception.errorcode.ProductErrorCode;
 import com.example.market.repository.ProductRepository;
+import com.example.market.repository.UserRepository;
 import com.example.market.security.AuthenticationFacade;
 import com.example.market.service.ProductService;
 
@@ -34,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
     private final AuthenticationFacade authenticationFacade;
+    private final UserRepository userRepository;
 
     // 상품등록
     @Override
@@ -60,6 +63,9 @@ public class ProductServiceImpl implements ProductService {
             String thumbNailImage = dto.getThumbNailImage();
             long sellerId = dto.getUserId();
 
+            Users seller = userRepository.findById(sellerId)
+                    .orElseThrow(() -> new CustomException(CommonErrorCode.MNF));
+
             Product product = new Product();
 
             product.setPrice(price);
@@ -69,7 +75,8 @@ public class ProductServiceImpl implements ProductService {
             product.setDescripion(descripion);
             product.setProductState(1);
             product.setThumbNailImage(thumbNailImage);
-            product.setSellerId(sellerId);
+            // product.setSellerId(seller);
+            product.setSellerId(seller);
 
             repository.save(product);
             return PostProductResponseDto.success();
@@ -104,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = repository.findById(productId)
                 .orElseThrow(() -> new CustomException(CommonErrorCode.DBE));
 
-        if (product.getSellerId() != sellerId) {
+        if (product.getSellerId().getUserId() != sellerId) {
             throw new CustomException(CommonErrorCode.DBE);
         }
 
@@ -125,6 +132,7 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<GetProductResponseDto> getProduct(GetProductRequestDto dto) {
 
         List<GetProductObjectDto> getProductObjectDtos = new ArrayList<>();
+
         try {
             dto.setUserId(authenticationFacade.getLoginUserId());
             if (dto.getUserId() <= 0) {
@@ -134,25 +142,29 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
             throw new CustomException(CommonErrorCode.MNF);
         }
+
         String title = dto.getTitle();
-        long productId = dto.getProductId();
+        List<Product> productList = repository.findAllByTitle(title);
 
-        Product product = repository.findBytitle(title)
-                .orElseThrow(() -> new CustomException(ProductErrorCode.NP));
+        if (productList.isEmpty()) {
+            throw new CustomException(ProductErrorCode.NP); // 상품 없음
+        }
 
-        GetProductObjectDto productDto = new GetProductObjectDto();
-        productDto.setSellerId(product.getSellerId());
-        productDto.setCategoryId(product.getCategoryId());
-        productDto.setPrice(product.getPrice());
-        productDto.setTitle(product.getTitle());
-        // productDto.setDescription(product.getDescription());
-        productDto.setLocation(product.getLocation());
-        productDto.setProductState(product.getProductState());
-        // productDto.setThumbnailImage(product.getThumbnailImage());
-        productDto.setViewCnt(product.getViewCnt());
+        for (Product product : productList) {
+            GetProductObjectDto productDto = new GetProductObjectDto();
+            productDto.setSellerId(product.getSellerId().getUserId());
+            productDto.setSellerNickname(product.getSellerId().getNickname());
+            productDto.setCategoryId(product.getCategoryId());
+            productDto.setPrice(product.getPrice());
+            productDto.setTitle(product.getTitle());
+            // productDto.setDescription(product.getDescription());
+            productDto.setLocation(product.getLocation());
+            productDto.setProductState(product.getProductState());
+            productDto.setThumbNailImage(product.getThumbNailImage());
+            productDto.setViewCnt(product.getViewCnt());
 
-        getProductObjectDtos.add(productDto);
-        // Product product = repository.findById(dto.getProductId()).get();
+            getProductObjectDtos.add(productDto);
+        }
 
         return GetProductResponseDto.success(getProductObjectDtos);
     }

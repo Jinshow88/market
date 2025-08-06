@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +26,9 @@ public class Product extends UpdatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-    @Column(name = "판매자ID")
-    private long sellerId;
+    @ManyToOne
+    @JoinColumn(name = "판매자ID") // 외래키 이름
+    private Users sellerId;
     @Column(name = "구매자ID")
     private long buyerId;
     @Column(name = "카테고리ID")
@@ -48,5 +51,7 @@ public class Product extends UpdatedAt {
     private long refreshCnt;
     @Column(name = "사용일시") // 끌어올리기 사용일시
     private LocalDateTime refreshedAt;
+
+
 
 }

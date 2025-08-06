@@ -43,4 +43,8 @@ public class Users extends UpdatedAt{
 
     private Role role;
 
+    public String getNickname() {
+    return userNic;
+}
+
 }
