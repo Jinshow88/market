@@ -153,7 +153,7 @@ public class ProductServiceImpl implements ProductService {
         for (Product product : productList) {
             GetProductObjectDto productDto = new GetProductObjectDto();
             productDto.setSellerId(product.getSellerId().getUserId());
-            productDto.setSellerNickname(product.getSellerId().getNickname());
+            productDto.setSellerNickname(product.getSellerId().getUserNic());
             productDto.setCategoryId(product.getCategoryId());
             productDto.setPrice(product.getPrice());
             productDto.setTitle(product.getTitle());
