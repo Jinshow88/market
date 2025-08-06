@@ -26,26 +26,26 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public ResponseEntity<PostRevicwResponseDto> postRevicw(PostRevicwRequestDto dto){
-        return null;
+        return PostRevicwResponseDto.success();
     }
 
     //리뷰수정
     @Override
     @Transactional
     public ResponseEntity<UpdateRevicwResponseDto> updateRevicw(UpdateRevicwRequestDto dto) {
-        return null;
+        return UpdateRevicwResponseDto.success();
     }
     
     //리뷰 삭제
     @Override
     @Transactional
     public ResponseEntity<DeleteRevicwResponseDto> deleteRevicw(DeleteRevicwRequestDto dto){
-        return null;
+        return DeleteRevicwResponseDto.success();
     }
     //리뷰 조회
     @Override
     @Transactional
     public ResponseEntity<GetRevicwResponseDto> getRevicw(GetRevicwRequestDto dto){
-        return null;
+        return GetRevicwResponseDto.success();
     }
 }
