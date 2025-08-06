@@ -1,23 +1,20 @@
 package com.example.market.common.security;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Component
 @ConfigurationProperties(prefix = "app")
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class AppProperties {
     private String jwtSecret;
-    private Long jwtExpirationMs;
-    // 필요한 설정 값들 추가
-    private Jwt jwt;
+    private long jwtExpirationMs;
+
+    private Jwt jwt = new Jwt(); // ✅ 기본 생성자 기반 객체 생성
 
     @Getter
     @Setter
@@ -30,17 +27,12 @@ public class AppProperties {
         private String refreshTokenCookieName;
         private int refreshTokenCookieMaxAge;
 
-        @ConstructorBinding
-        public Jwt(String secret, String headerSchemaName, String tokenType, long accessTokenExpiry,
-                long refreshTokenExpiry, String refreshTokenCookieName) {
-            this.secret = secret;
-            this.headerSchemaName = headerSchemaName;
-            this.tokenType = tokenType;
-            this.accessTokenExpiry = accessTokenExpiry;
-            this.refreshTokenExpiry = refreshTokenExpiry;
-            this.refreshTokenCookieName = refreshTokenCookieName;
-            this.refreshTokenCookieMaxAge = (int) (refreshTokenExpiry * 0.001); // ms > s 변환
-        }
+        public Jwt() {
+        } // ✅ 반드시 필요
 
+        public void setRefreshTokenExpiry(long refreshTokenExpiry) {
+            this.refreshTokenExpiry = refreshTokenExpiry;
+            this.refreshTokenCookieMaxAge = (int) (refreshTokenExpiry * 0.001);
+        }
     }
 }

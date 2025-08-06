@@ -6,7 +6,6 @@ import com.example.market.dto.request.favoriteproduct.PostFavoriteRequestDto;
 import com.example.market.dto.response.favoriteproduct.DeleteFavoriteResponseDto;
 import com.example.market.dto.response.favoriteproduct.GetFavoriteResponseDto;
 import com.example.market.dto.response.favoriteproduct.PostFavoriteResponseDto;
-import com.example.market.repository.FavoriteProductRepository;
 import com.example.market.service.FavoriteProductService;
 
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class FavorietProductServiceImpl implements FavoriteProductService {
-
-    private final FavoriteProductRepository favoriteProductRepository;
 
     // 관심상품등록
     @Override
