@@ -8,6 +8,7 @@ import com.example.market.dto.response.favoriteproduct.GetFavoriteResponseDto;
 import com.example.market.dto.response.favoriteproduct.PostFavoriteResponseDto;
 import com.example.market.exception.CustomException;
 import com.example.market.exception.errorcode.CommonErrorCode;
+import com.example.market.repository.FavoriteProductRepository;
 import com.example.market.security.AuthenticationFacade;
 import com.example.market.service.FavoriteProductService;
 
@@ -21,9 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FavorietProductServiceImpl implements FavoriteProductService {
+public class FavoriteProductServiceImpl implements FavoriteProductService {
 
     private final AuthenticationFacade authenticationFacade;
+    private final FavoriteProductRepository repository;
 
     // 관심상품등록
     @Override
@@ -42,6 +44,11 @@ public class FavorietProductServiceImpl implements FavoriteProductService {
         long userId = dto.getUserId();
         long sellerId = dto.getSellerId();
         long productId = dto.getProductId();
+        boolean isValid = repository.existsById(null);// 상품 이름검색으로 수정중
+
+        if (isValid) {
+            
+        }
 
         return PostFavoriteResponseDto.success();
     }

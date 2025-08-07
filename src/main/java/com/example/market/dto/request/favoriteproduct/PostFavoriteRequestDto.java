@@ -15,6 +15,8 @@ public class PostFavoriteRequestDto {
 
     private long productId;
 
+    private boolean isValid;
+
 
 
 }
