@@ -13,8 +13,8 @@ import com.example.market.service.FavoriteProductService;
 
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,11 +46,11 @@ public class FavoriteProductController {
     }
 
     // 관심상품해제
-    @DeleteMapping("/DeleteProduct")
+    @PatchMapping("/PatchProduct")
     @Operation(summary = "관심상품해제", description = DeleteUserSwagger.DELETE_USER_DESCRIPTION)
     @ApiResponse(responseCode = "200", description = DeleteUserSwagger.DELETE_USER_RESPONSE_ERROR_CODE,
     content = @Content(mediaType = "application/json", schema = @Schema(implementation =  DeleteFavoriteResponseDto.class)))
-    public ResponseEntity<DeleteFavoriteResponseDto> deleteFaProd(@ParameterObject DeleteFavoriteRequestDto dto){
+    public ResponseEntity<DeleteFavoriteResponseDto> deleteFaProd(@RequestBody DeleteFavoriteRequestDto dto){
         return service.deleteFaProd(dto);
     }
 

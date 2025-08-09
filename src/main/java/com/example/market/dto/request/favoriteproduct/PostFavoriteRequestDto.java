@@ -14,9 +14,7 @@ public class PostFavoriteRequestDto {
     private long sellerId;
 
     private long productId;
-
+    @JsonIgnore
     private boolean isValid;
-
-
 
 }

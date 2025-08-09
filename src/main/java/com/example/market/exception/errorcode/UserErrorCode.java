@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum UserErrorCode implements ErrorCode {
-        // 400
+    // 400
+    UNT(HttpStatus.BAD_REQUEST, "사용자를 찾을수 없습니다."), // USER_NOT_FOUND
+    SNT(HttpStatus.BAD_REQUEST, "판매자를 찾을수 없습니다."), // SELLER_NOT_FOUND
     WG(HttpStatus.BAD_REQUEST, "글램핑 ID를 올바르게 입력해주세요."); // WRONG_GLAMP_ID
 
     private final HttpStatus httpStatus;

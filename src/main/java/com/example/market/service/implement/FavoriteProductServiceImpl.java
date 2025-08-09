@@ -1,14 +1,24 @@
 package com.example.market.service.implement;
 
+import java.util.Optional;
+
 import com.example.market.dto.request.favoriteproduct.DeleteFavoriteRequestDto;
 import com.example.market.dto.request.favoriteproduct.GetFavoriteRequestDto;
 import com.example.market.dto.request.favoriteproduct.PostFavoriteRequestDto;
 import com.example.market.dto.response.favoriteproduct.DeleteFavoriteResponseDto;
 import com.example.market.dto.response.favoriteproduct.GetFavoriteResponseDto;
 import com.example.market.dto.response.favoriteproduct.PostFavoriteResponseDto;
+import com.example.market.entity.FavoriteProduct;
+import com.example.market.entity.Product;
+import com.example.market.entity.Users;
 import com.example.market.exception.CustomException;
 import com.example.market.exception.errorcode.CommonErrorCode;
+import com.example.market.exception.errorcode.FavoriteProductErrorCode;
+import com.example.market.exception.errorcode.ProductErrorCode;
+import com.example.market.exception.errorcode.UserErrorCode;
 import com.example.market.repository.FavoriteProductRepository;
+import com.example.market.repository.ProductRepository;
+import com.example.market.repository.UserRepository;
 import com.example.market.security.AuthenticationFacade;
 import com.example.market.service.FavoriteProductService;
 
@@ -26,6 +36,8 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
 
     private final AuthenticationFacade authenticationFacade;
     private final FavoriteProductRepository repository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     // 관심상품등록
     @Override
@@ -41,13 +53,24 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
             throw new CustomException(CommonErrorCode.MNF);
         }
 
-        long userId = dto.getUserId();
-        long sellerId = dto.getSellerId();
         long productId = dto.getProductId();
-        boolean isValid = repository.existsById(null);// 상품 이름검색으로 수정중
 
-        if (isValid) {
-            
+        boolean productExists = productRepository.existsById(productId);
+
+        if (productExists) {
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new CustomException(ProductErrorCode.NP));
+            Users seller = Optional.ofNullable(product.getSellerId())
+                    .orElseThrow(() -> new CustomException(UserErrorCode.SNT));
+
+            FavoriteProduct favorite = new FavoriteProduct();
+
+            favorite.setProductId(product);
+            favorite.setSellerId(seller);
+            favorite.setIsValid(1);
+            repository.save(favorite);
+        } else {
+            throw new CustomException(FavoriteProductErrorCode.NP);
         }
 
         return PostFavoriteResponseDto.success();
@@ -57,13 +80,58 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
     @Override
     @Transactional
     public ResponseEntity<DeleteFavoriteResponseDto> deleteFaProd(DeleteFavoriteRequestDto dto) {
-        return DeleteFavoriteResponseDto.success();
+
+        try {
+            dto.setUserId(authenticationFacade.getLoginUserId());
+            if (dto.getUserId() <= 0) {
+                throw new RuntimeException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.MNF);
+        }
+
+        // userId 가져오기
+        long userId = dto.getUserId();
+
+        // userId로 Users 엔티티 조회
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(UserErrorCode.UNT));
+
+        // 닉네임 가져오기
+        String userNic = user.getUserNic();
+        long favoriteId = dto.getFavoriteId();
+        long isValids = dto.getIsValid();
+
+        FavoriteProduct favoriteProduct = repository.findById(favoriteId)
+                .orElseThrow(() -> new CustomException(FavoriteProductErrorCode.NP));
+        if (favoriteProduct.getIsValid() == 1) {
+            favoriteProduct.setIsValid(0);
+            repository.save(favoriteProduct);
+        } else if (favoriteProduct.getIsValid() == 0) {
+            favoriteProduct.setIsValid(1);
+            repository.save(favoriteProduct);
+        }
+
+        long isValid = favoriteProduct.getIsValid();
+        return DeleteFavoriteResponseDto.success(userNic, isValid);
     }
 
     // 관심상품목록
     @Override
     @Transactional
     public ResponseEntity<GetFavoriteResponseDto> getFaProd(GetFavoriteRequestDto dto) {
+
+        try {
+            dto.setUserId(authenticationFacade.getLoginUserId());
+            if (dto.getUserId() <= 0) {
+                throw new RuntimeException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.MNF);
+        }
+
         return GetFavoriteResponseDto.success();
     }
 }

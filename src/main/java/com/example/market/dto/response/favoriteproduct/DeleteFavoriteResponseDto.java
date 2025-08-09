@@ -15,12 +15,17 @@ import lombok.Setter;
 @Getter
 public class DeleteFavoriteResponseDto extends ResponseDto{
 
-    private DeleteFavoriteResponseDto(){
+    private String userNic;
+    private long isValid;
+
+    private DeleteFavoriteResponseDto(String userNic, long isValid){
         super(SUCCESS_CODE, SUCCESS_MESSAGE);
+        this.userNic = userNic;
+        this.isValid = isValid;
     }
     
-    public static ResponseEntity<DeleteFavoriteResponseDto> success(){
-        DeleteFavoriteResponseDto result = new DeleteFavoriteResponseDto();
+    public static ResponseEntity<DeleteFavoriteResponseDto> success(String userNic, long isValid){
+        DeleteFavoriteResponseDto result = new DeleteFavoriteResponseDto(userNic, isValid);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

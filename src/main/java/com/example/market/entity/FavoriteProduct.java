@@ -34,6 +34,6 @@ public class FavoriteProduct extends CreatedAt {
     private Product productId;
     
     @Column(name = "찜상태")
-    private boolean isValid;
+    private Integer isValid;
 
 }
