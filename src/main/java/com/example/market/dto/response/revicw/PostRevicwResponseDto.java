@@ -4,6 +4,7 @@ import static com.example.market.common.swagger.GlobalConst.SUCCESS_CODE;
 import static com.example.market.common.swagger.GlobalConst.SUCCESS_MESSAGE;
 
 import com.example.market.dto.ResponseDto;
+import com.example.market.dto.object.revicw.PostRevicwObjectDto;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,14 @@ import lombok.Setter;
 @Setter
 public class PostRevicwResponseDto extends ResponseDto{
 
-    private PostRevicwResponseDto(){
+    private PostRevicwObjectDto postRevicwObjectDto;
+    private PostRevicwResponseDto(PostRevicwObjectDto postRevicwObjectDto){
         super(SUCCESS_CODE, SUCCESS_MESSAGE);
+        this.postRevicwObjectDto = postRevicwObjectDto;
     }
 
-    public static ResponseEntity<PostRevicwResponseDto> success(){
-        PostRevicwResponseDto result = new PostRevicwResponseDto();
+    public static ResponseEntity<PostRevicwResponseDto> success(PostRevicwObjectDto postRevicwObjectDto){
+        PostRevicwResponseDto result = new PostRevicwResponseDto(postRevicwObjectDto);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     

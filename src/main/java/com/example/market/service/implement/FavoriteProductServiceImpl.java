@@ -61,8 +61,10 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
         boolean productExists = productRepository.existsById(productId);
 
         if (productExists) {
+            
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new CustomException(ProductErrorCode.NP));
+
             Users seller = Optional.ofNullable(product.getSellerId())
                     .orElseThrow(() -> new CustomException(UserErrorCode.SNT));
 
