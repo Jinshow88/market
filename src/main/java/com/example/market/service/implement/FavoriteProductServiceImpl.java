@@ -1,7 +1,10 @@
 package com.example.market.service.implement;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import com.example.market.dto.object.favoriteproduct.GetFavoriteSellerDto;
 import com.example.market.dto.request.favoriteproduct.DeleteFavoriteRequestDto;
 import com.example.market.dto.request.favoriteproduct.GetFavoriteRequestDto;
 import com.example.market.dto.request.favoriteproduct.PostFavoriteRequestDto;
@@ -101,7 +104,6 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
         // 닉네임 가져오기
         String userNic = user.getUserNic();
         long favoriteId = dto.getFavoriteId();
-        long isValids = dto.getIsValid();
 
         FavoriteProduct favoriteProduct = repository.findById(favoriteId)
                 .orElseThrow(() -> new CustomException(FavoriteProductErrorCode.NP));
@@ -131,7 +133,31 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
             e.printStackTrace();
             throw new CustomException(CommonErrorCode.MNF);
         }
+        long productId = dto.getProductId();
 
-        return GetFavoriteResponseDto.success();
+        Users sellerId = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new CustomException(UserErrorCode.UNT));
+        // Product product = productRepository.findById(productId)
+        // .orElseThrow(() -> new CustomException(FavoriteProductErrorCode.NP));
+
+        // List<FavoriteProduct> fav = repository.findById(dto.getFavoriteId());
+        //         .orElseThrow(() -> new CustomException(FavoriteProductErrorCode.NP));
+
+        // Users seller = Optional.ofNullable(product.getSellerId())
+        // .orElseThrow(() -> new CustomException(UserErrorCode.SNT));
+        List<Product> products = productRepository.findAllBySellerId(sellerId);
+        List<GetFavoriteSellerDto> getFavoriteSellerDto = new ArrayList<>();
+
+        for (Product product : products) {
+            GetFavoriteSellerDto productDto = new GetFavoriteSellerDto();
+            productDto.setTitle(product.getTitle());
+            productDto.setSellerNic(product.getSellerId().getUserNic());
+            // productDto.setIsValid(fav.getIsValid()); // 상품별 유효성 여부에 맞게 수정
+            productDto.setSellerId(product.getSellerId().getUserId());
+
+            getFavoriteSellerDto.add(productDto);
+        }
+
+        return GetFavoriteResponseDto.success(getFavoriteSellerDto);
     }
 }

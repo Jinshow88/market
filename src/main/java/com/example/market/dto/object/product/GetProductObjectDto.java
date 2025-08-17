@@ -27,9 +27,9 @@ public class GetProductObjectDto {
     @Schema(example = "5", description = "조회 수")
     private long viewCnt;
     
-    public void setSellerNickname(String sellerNickname) {
-        this.sellerNickname = sellerNickname;
-    }
+    // public void setSellerNickname(String sellerNickname) {
+    //     this.sellerNickname = sellerNickname;
+    // }
 
 
 }

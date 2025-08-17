@@ -11,4 +11,8 @@ import lombok.Setter;
 public class GetFavoriteRequestDto {
     @JsonIgnore
     private long userId;
+    @JsonIgnore
+    private long productId;
+    @JsonIgnore
+    private long favoriteId;
 }
