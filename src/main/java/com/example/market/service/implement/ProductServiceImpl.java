@@ -104,19 +104,26 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
             throw new CustomException(CommonErrorCode.MNF);
         }
+        try {
+            long productId = dto.getProductId();
+            long sellerId = dto.getUserId();
 
-        long productId = dto.getProductId();
-        long sellerId = dto.getUserId();
+            Product product = repository.findById(productId)
+                    .orElseThrow(() -> new CustomException(CommonErrorCode.DBE));
 
-        Product product = repository.findById(productId)
-                .orElseThrow(() -> new CustomException(CommonErrorCode.DBE));
+            if (product.getSellerId().getUserId() != sellerId) {
+                throw new CustomException(CommonErrorCode.DBE);
+            }
 
-        if (product.getSellerId().getUserId() != sellerId) {
+            repository.deleteById(productId);
+            return DeleteProductResponseDto.success();
+        } catch (CustomException e) {
+            e.printStackTrace();
+            throw new CustomException(e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new CustomException(CommonErrorCode.DBE);
         }
-
-        repository.deleteById(productId);
-        return DeleteProductResponseDto.success();
     }
 
     // 상품수정
@@ -146,26 +153,34 @@ public class ProductServiceImpl implements ProductService {
         String title = dto.getTitle();
         List<Product> productList = repository.findAllByTitle(title);
 
-        if (productList.isEmpty()) {
-            throw new CustomException(ProductErrorCode.NP); // 상품 없음
+        try {
+            if (productList.isEmpty()) {
+                throw new CustomException(ProductErrorCode.NP); // 상품 없음
+            }
+
+            for (Product product : productList) {
+                GetProductObjectDto productDto = new GetProductObjectDto();
+                productDto.setSellerId(product.getSellerId().getUserId());
+                productDto.setSellerNickname(product.getSellerId().getUserNic());
+                productDto.setCategoryId(product.getCategoryId());
+                productDto.setPrice(product.getPrice());
+                productDto.setTitle(product.getTitle());
+                // productDto.setDescription(product.getDescription());
+                productDto.setLocation(product.getLocation());
+                productDto.setProductState(product.getProductState());
+                productDto.setThumbNailImage(product.getThumbNailImage());
+                productDto.setViewCnt(product.getViewCnt());
+
+                getProductObjectDtos.add(productDto);
+            }
+
+            return GetProductResponseDto.success(getProductObjectDtos);
+        } catch (CustomException e) {
+            e.printStackTrace();
+            throw new CustomException(e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.DBE);
         }
-
-        for (Product product : productList) {
-            GetProductObjectDto productDto = new GetProductObjectDto();
-            productDto.setSellerId(product.getSellerId().getUserId());
-            productDto.setSellerNickname(product.getSellerId().getUserNic());
-            productDto.setCategoryId(product.getCategoryId());
-            productDto.setPrice(product.getPrice());
-            productDto.setTitle(product.getTitle());
-            // productDto.setDescription(product.getDescription());
-            productDto.setLocation(product.getLocation());
-            productDto.setProductState(product.getProductState());
-            productDto.setThumbNailImage(product.getThumbNailImage());
-            productDto.setViewCnt(product.getViewCnt());
-
-            getProductObjectDtos.add(productDto);
-        }
-
-        return GetProductResponseDto.success(getProductObjectDtos);
     }
 }
