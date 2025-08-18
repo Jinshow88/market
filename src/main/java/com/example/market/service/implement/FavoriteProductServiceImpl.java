@@ -61,7 +61,7 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
         boolean productExists = productRepository.existsById(productId);
 
         if (productExists) {
-            
+
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new CustomException(ProductErrorCode.NP));
 
@@ -135,29 +135,22 @@ public class FavoriteProductServiceImpl implements FavoriteProductService {
             e.printStackTrace();
             throw new CustomException(CommonErrorCode.MNF);
         }
-        long productId = dto.getProductId();
 
-        Users sellerId = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new CustomException(UserErrorCode.UNT));
-        // Product product = productRepository.findById(productId)
-        // .orElseThrow(() -> new CustomException(FavoriteProductErrorCode.NP));
+        List<FavoriteProduct> favoriteProducts = repository.findAllBySellerId_UserId(dto.getUserId());
 
-        // List<FavoriteProduct> fav = repository.findById(dto.getFavoriteId());
-        //         .orElseThrow(() -> new CustomException(FavoriteProductErrorCode.NP));
-
-        // Users seller = Optional.ofNullable(product.getSellerId())
-        // .orElseThrow(() -> new CustomException(UserErrorCode.SNT));
-        List<Product> products = productRepository.findAllBySellerId(sellerId);
         List<GetFavoriteSellerDto> getFavoriteSellerDto = new ArrayList<>();
 
-        for (Product product : products) {
-            GetFavoriteSellerDto productDto = new GetFavoriteSellerDto();
-            productDto.setTitle(product.getTitle());
-            productDto.setSellerNic(product.getSellerId().getUserNic());
-            // productDto.setIsValid(fav.getIsValid()); // 상품별 유효성 여부에 맞게 수정
-            productDto.setSellerId(product.getSellerId().getUserId());
+        for (FavoriteProduct product : favoriteProducts) {
 
-            getFavoriteSellerDto.add(productDto);
+            if (product.getIsValid() != null && product.getIsValid() == 1) {
+                GetFavoriteSellerDto productDto = new GetFavoriteSellerDto();
+                productDto.setTitle(product.getProductId().getTitle());
+                productDto.setSellerNic(product.getSellerId().getUserNic());
+                productDto.setIsValid(product.getIsValid()); // 상품별 유효성 여부에 맞게 수정
+                productDto.setSellerId(product.getSellerId().getUserId());
+
+                getFavoriteSellerDto.add(productDto);
+            }
         }
 
         return GetFavoriteResponseDto.success(getFavoriteSellerDto);

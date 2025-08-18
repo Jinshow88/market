@@ -14,4 +14,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByTitle(String title);
 
     List<Product> findAllBySellerId(Users sellerId);
+
 }
