@@ -1,22 +1,27 @@
 package com.example.market.controller;
 
 import com.example.market.common.swagger.description.product.DeleteProductSwagger;
+import com.example.market.common.swagger.description.product.GetInfoProductSwagger;
 import com.example.market.common.swagger.description.product.GetProductSwagger;
 import com.example.market.common.swagger.description.product.PostProductSwagger;
 import com.example.market.common.swagger.description.product.UpdateProductSwagger;
 import com.example.market.dto.request.product.DeleteProductRequestDto;
+import com.example.market.dto.request.product.GetInfoRequestDto;
 import com.example.market.dto.request.product.GetProductRequestDto;
 import com.example.market.dto.request.product.PostProductRequestDto;
 import com.example.market.dto.request.product.UpdateProductRequestDto;
 import com.example.market.dto.response.product.DeleteProductResponseDto;
+import com.example.market.dto.response.product.GetInfoResponseDto;
 import com.example.market.dto.response.product.GetProductResponseDto;
 import com.example.market.dto.response.product.PostProductResponseDto;
 import com.example.market.dto.response.product.UpdateProductResponseDto;
 import com.example.market.service.ProductService;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,7 +77,16 @@ public class ProductController {
     @Operation(summary = "상품 조회", description = GetProductSwagger.GET_PRODUCT_DESCRIPTION)
     @ApiResponse(responseCode = "200", description = GetProductSwagger.GET_PRODUCT_RESPONSE_ERROR_CODE ,
     content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetProductResponseDto.class)))
-    public ResponseEntity<GetProductResponseDto> getProduct(GetProductRequestDto dto){
+    public ResponseEntity<GetProductResponseDto> getProduct(@ModelAttribute @ParameterObject GetProductRequestDto dto){
         return service.getProduct(dto);
+    }
+
+    //상품상세조회
+    @GetMapping("/get-info")
+    @Operation(summary = "상품 상세 조회", description = GetInfoProductSwagger.GET_INFO_PRODUCT_DESCRIPTION)
+    @ApiResponse(responseCode = "200", description = GetInfoProductSwagger.GET_INFO_PRODUCT_RESPONSE_ERROR_CODE,
+    content = @Content(mediaType = "application/json", schema = @Schema(implementation = GetInfoResponseDto.class)))
+    public ResponseEntity<GetInfoResponseDto> getInfo(@ModelAttribute @ParameterObject GetInfoRequestDto dto){
+        return service.getInfo(dto);
     }
 }

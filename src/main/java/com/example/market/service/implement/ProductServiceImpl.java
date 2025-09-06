@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.example.market.dto.object.product.GetProductObjectDto;
 import com.example.market.dto.request.product.DeleteProductRequestDto;
+import com.example.market.dto.request.product.GetInfoRequestDto;
 import com.example.market.dto.request.product.GetProductRequestDto;
 import com.example.market.dto.request.product.PostProductRequestDto;
 import com.example.market.dto.request.product.UpdateProductRequestDto;
 import com.example.market.dto.response.product.DeleteProductResponseDto;
+import com.example.market.dto.response.product.GetInfoResponseDto;
 import com.example.market.dto.response.product.GetProductResponseDto;
 import com.example.market.dto.response.product.PostProductResponseDto;
 import com.example.market.dto.response.product.UpdateProductResponseDto;
@@ -182,5 +184,13 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
             throw new CustomException(CommonErrorCode.DBE);
         }
+    }
+
+
+    //상품상세조회
+    @Override
+    @Transactional
+    public ResponseEntity<GetInfoResponseDto> getInfo(GetInfoRequestDto dto){
+        return GetInfoResponseDto.success();
     }
 }
