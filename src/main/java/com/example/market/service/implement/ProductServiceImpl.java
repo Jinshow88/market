@@ -191,6 +191,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ResponseEntity<GetInfoResponseDto> getInfo(GetInfoRequestDto dto){
+
+        try {
+            dto.setUserId(authenticationFacade.getLoginUserId());
+            if (dto.getUserId() <= 0) {
+                throw new RuntimeException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(CommonErrorCode.MNF);
+        }
+        
+
         return GetInfoResponseDto.success();
     }
 }
